@@ -7,36 +7,31 @@ import (
 	"net/http"
 )
 
-func helloHandler(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set(
-		"Content-Type",
-		"text/html",
-	)
-	io.WriteString(
-		res,
-		`<doctype html>
-		<html>
-			<head>
-				<title>Hello Gopher</title>
-			</head>
-			<body>
-				Hello Gopher </br>
-				It is really awesome that both Docker and Kubernetes are written in Go!
-			</body>
-		</html>`,
-	)
+// type ServeMux struct {}
+
+type HttpHandler struct {}
+
+func (handler HttpHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+	// data := []byte("Hello World")
+
+	// write `Hello` using `io.WriteString` function
+    io.WriteString(res, "Hello")
+    // write `World` using `fmt.Fprint` function
+    fmt.Fprint(res, " World! ")
+    // write `❤️` using simple `Write` call
+    res.Write([]byte("❤️"))
 }
 
-func defaultHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Go web app powered by Docker")
-}
-
-func main() {
-	http.HandleFunc("/", defaultHandler)
-	http.HandleFunc("/hello", helloHandler)
-	err := http.ListenAndServe(":8080", nil)
+func (handler HttpHandler) ListenAndServe(port string) {
+	err := http.ListenAndServe(":8080", handler)
+	
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 		return
 	}
+}
+
+func main() {
+	kernal := HttpHandler{}
+	kernal.ListenAndServe(":8080")
 }
