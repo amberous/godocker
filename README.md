@@ -1,14 +1,13 @@
 ### Build & Run
 ```
-docker build -t go-docker .
-docker run --rm -it -p 8080:8080 go-docker
+docker-compose up --build
 ```
 
 ### SSH
 ```
-docker build -t go-docker .
-docker run --rm -it -p 8080:8080 -v $(pwd):/go/src/app go-docker bash
+docker exec -it godocker
 ```
 
 ### Docker Config
 https://hasura.io/blog/the-ultimate-guide-to-writing-dockerfiles-for-go-web-apps-336efad7012c/
+https://golangcode.com/basic-docker-setup/

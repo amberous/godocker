@@ -1,5 +1,9 @@
 FROM golang:latest
 
+# ENV
+# ENV APP_NAME httpdocker
+# ENV PORT 8080
+
 # Working src
 WORKDIR /go/src/app
 ADD src src
@@ -16,5 +20,6 @@ ADD src src
 # Run main.go
 # CMD ["go", "run", "src/main.go"]
 
+
 ENTRYPOINT ["go", "run", "src/main.go"]
-EXPOSE 8080:8080
+EXPOSE 8080
