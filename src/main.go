@@ -23,15 +23,23 @@ func (handler HttpHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)
 }
 
 func main() {
-	kernal := http.NewServeMux()
-	kernal.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+		io.WriteString(res, `
+			<h1>Go HTTP w/ Docker</h1>
+			<a href="/hello">Hello</a>
+			<a href="/error">Error</a>
+		`)
+	})
+	http.HandleFunc("/hello", func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "application/json")
 		io.WriteString(res, "Hello World!")
 	})
-	kernal.HandleFunc("/go", func(res http.ResponseWriter, req *http.Request) {
-		io.WriteString(res, "Hello Go!")
+	http.HandleFunc("/error", func(res http.ResponseWriter, req *http.Request) {
+		res.WriteHeader(http.StatusBadRequest)
+		io.WriteString(res, `{"status": "ERROR"}`)
 	})
 
-	err := http.ListenAndServe(":8080", kernal)
+	err := http.ListenAndServe(":8080", nil)
 	
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
